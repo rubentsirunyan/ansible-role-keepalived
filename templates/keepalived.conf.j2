@@ -1,0 +1,30 @@
+! Configuration File for keepalived
+global_defs {
+}
+
+vrrp_script chk_service {
+    script '/etc/keepalived/healthcheck.sh'
+    interval 2
+}
+
+vrrp_instance VI_1 {
+    state {{ keepalived_role }}
+    interface {{ keepalived_interface }}
+    virtual_router_id {{ keepalived_router_id }}
+    {% if keepalived_role.lower() == "master" %}
+    priority {{ keepalived_master_priority }}
+    {% else %}
+    priority {{ keepalived_backup_priority }}
+    {% endif %}   
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass {{ keepalived_auth_pass }}
+    }
+    virtual_ipaddress {
+        {{ keepalived_virtual_ip }} dev {{ keepalived_interface }} label {{ keepalived_interface }}:0
+    }
+    track_script {
+        chk_service
+    }
+}

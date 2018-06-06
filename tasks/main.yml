@@ -1,0 +1,32 @@
+---
+- name: Install keepalived
+  yum: 
+    name: keepalived
+    state: present
+  tags: 
+    - keepalived
+
+- name: Deploy the healthcheck script
+  template: 
+    src: healthcheck.sh.j2 
+    dest: /etc/keepalived/healthcheck.sh
+    mode: 0755
+    owner: root
+    group: root
+  tags: keepalived
+  notify: restart keepalived
+
+- name: Deploy the configuration file
+  template: 
+    src: keepalived.conf.j2 
+    dest: /etc/keepalived/keepalived.conf
+  tags: 
+    - keepalived
+  notify: restart keepalived
+
+- name: Ensure keepalived is running
+  service: 
+    name: keepalived 
+    state: started
+  tags: 
+    - keepalived
