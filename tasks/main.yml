@@ -3,6 +3,7 @@
   yum: 
     name: keepalived
     state: present
+  become: yes
   tags: 
     - keepalived
 
@@ -13,6 +14,7 @@
     mode: 0755
     owner: root
     group: root
+  become: yes
   tags: keepalived
   notify: restart keepalived
 
@@ -20,6 +22,7 @@
   template: 
     src: keepalived.conf.j2 
     dest: /etc/keepalived/keepalived.conf
+  become: yes
   tags: 
     - keepalived
   notify: restart keepalived
@@ -28,5 +31,6 @@
   service: 
     name: keepalived 
     state: started
+  become: yes
   tags: 
     - keepalived
