@@ -4,7 +4,7 @@ keepalived_auth_pass: dummypas
 keepalived_role: MASTER
 keepalived_router_id: 42
 keepalived_interface: eth0
-keepalived_virtual_ip: 10.0.0.1
+keepalived_virtual_ip: 10.0.0.1/16
 keepalived_check_process: keepalived
 keepalived_master_priority: 100
 keepalived_backup_priority: 50
